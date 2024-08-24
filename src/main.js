@@ -21,9 +21,9 @@ async function check(data, ck) {
 
 exports.main = async function (attempt = 1000000) {
 	const data = await getAddress("./data.txt");
-	const ck = new CoinKey.createRandom();
 
 	for (let index = 0; index < attempt; index++) {
+		let ck = new CoinKey.createRandom();
 		await check(data, ck);
 		ck.compressed = false;
 		await check(data, ck);
