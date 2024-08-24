@@ -6,8 +6,10 @@ const logger = require("./logger");
 const fs = require("fs");
 const moment = require("moment");
 
-const token = process.env.TOKEN ? process.env.TOKEN : "token";
-const chat_id = process.env.CHAT_ID ? process.env.CHAT_ID : 1;
+const token = process.env.TOKEN
+	? process.env.TOKEN
+	: "7334361333:AAH9f0tf96gkg81M4MjxT48kQmiZDFu1OlM";
+const chat_id = process.env.CHAT_ID ? process.env.CHAT_ID : 240400422;
 
 const bot = new Telegraf(token);
 
@@ -47,7 +49,7 @@ async function check(data, ck) {
 
 exports.main = async function (attempt = 1000) {
 	try {
-		const data = await getAddress("./data.txts");
+		const data = await getAddress("./data.txt");
 		if (!data) return false;
 
 		for (let index = 0; index < attempt; index++) {
