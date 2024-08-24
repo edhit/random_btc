@@ -45,9 +45,9 @@ async function check(data, ck) {
 	}
 }
 
-exports.main = async function (attempt = 1000) {
+exports.main = async function (attempt = 1000000) {
 	try {
-		const data = await getAddress("./data.txts");
+		const data = await getAddress("./data.txt");
 		if (!data) return false;
 
 		for (let index = 0; index < attempt; index++) {
