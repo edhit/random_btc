@@ -1,0 +1,32 @@
+{
+    "workbench.sideBar.location": "left",
+    "window.zoomLevel": 1,
+    "workbench.colorTheme": "Monokai Pro",
+    "workbench.iconTheme": "Monokai Pro Icons",
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "none",
+    "breadcrumbs.enabled": true,
+    "editor.minimap.enabled": false,
+    "prettier.tabWidth": 4,
+    "prettier.vueIndentScriptAndStyle": true,
+    "prettier.useTabs": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "explorer.confirmDelete": false,
+    "editor.tabSize": 4,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "vue-html": "html",
+        "vue": "html"
+    }
+}
