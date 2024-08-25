@@ -13,7 +13,7 @@ const bot = new Telegraf(token);
 
 async function getAddress(path) {
 	try {
-		const data = fs.readFileSync(path).toString().split("\r\n");
+		const data = fs.readFileSync(path).toString().split("\n");
 
 		return data;
 	} catch (error) {
