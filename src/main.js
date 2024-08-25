@@ -25,9 +25,9 @@ async function getAddress(path) {
 async function check(data, ck) {
 	try {
 		if (data.includes(`${ck.publicAddress}\\n`)) {
-			console.log("Private Key (Wallet Import Format): " + ck.privateWif);
-			console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
-			console.log("Address: " + ck.publicAddress);
+			// console.log("Private Key (Wallet Import Format): " + ck.privateWif);
+			// console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
+			// console.log("Address: " + ck.publicAddress);
 			logger.info("Private Key (Wallet Import Format): " + ck.privateWif);
 			logger.info("Private Key (Hex): " + ck.privateKey.toString("hex"));
 			logger.info("Address: " + ck.publicAddress);
@@ -56,10 +56,15 @@ exports.main = async function (attempt = 1000000) {
 			ck.compressed = false;
 			await check(data, ck);
 		}
-		const date = moment().format("MMM Do YY, h:mm:ss");
 
-		console.log(date);
+		const date = moment().format("MMM Do YY, h:mm:ss");
+		const night = moment().format("H");
+
 		logger.info(date);
+
+		if (parseInt(night) === 0) {
+			await bot.telegram.sendMessage(chat_id, date);
+		}
 	} catch (error) {
 		await bot.telegram.sendMessage(chat_id, error);
 		return false;
