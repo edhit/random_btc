@@ -3,12 +3,12 @@ const logger = pino({
 	transport: {
 		targets: [
 			{ target: "pino-pretty" },
-			{
-				target: "pino/file",
-				options: {
-					destination: "./app.log",
-				},
-			},
+			// {
+			// 	target: "pino/file",
+			// 	options: {
+			// 		destination: "./app.log",
+			// 	},
+			// },
 		],
 	},
 });
