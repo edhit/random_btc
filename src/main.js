@@ -34,9 +34,9 @@ async function getAddress(path) {
 async function check(data, ck) {
 	try {
 		if (data.includes(`${ck.publicAddress}`)) {
-			// console.log("Private Key (Wallet Import Format): " + ck.privateWif);
-			// console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
-			// console.log("Address: " + ck.publicAddress);
+			console.log("Private Key (Wallet Import Format): " + ck.privateWif);
+			console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
+			console.log("Address: " + ck.publicAddress);
 			logger.info("Private Key (Wallet Import Format): " + ck.privateWif);
 			logger.info("Private Key (Hex): " + ck.privateKey.toString("hex"));
 			logger.info("Address: " + ck.publicAddress);
