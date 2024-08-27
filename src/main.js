@@ -11,13 +11,22 @@ const chat_id = process.env.CHAT_ID ? process.env.CHAT_ID : 1;
 
 const bot = new Telegraf(token);
 
+async function sendMessage(message) {
+	try {
+		await bot.telegram.sendMessage(chat_id, message);
+	} catch (error) {
+		logger.error(error);
+	}
+}
+
 async function getAddress(path) {
 	try {
 		const data = fs.readFileSync(path).toString().split("\n");
 
 		return data;
 	} catch (error) {
-		await bot.telegram.sendMessage(chat_id, error);
+		await sendMessage(error);
+		logger.error(error);
 		return false;
 	}
 }
@@ -40,7 +49,8 @@ async function check(data, ck) {
 			);
 		}
 	} catch (error) {
-		await bot.telegram.sendMessage(chat_id, error);
+		await sendMessage(error);
+		logger.error(error);
 		return false;
 	}
 }
@@ -62,11 +72,12 @@ exports.main = async function (attempt = 1000000) {
 
 		logger.info(date);
 
-		if (parseInt(night) === 0) {
+		if (parseInt(night) <= 3) {
 			await bot.telegram.sendMessage(chat_id, date);
 		}
 	} catch (error) {
-		await bot.telegram.sendMessage(chat_id, error);
+		await sendMessage(error);
+		logger.error(error);
 		return false;
 	}
 };
