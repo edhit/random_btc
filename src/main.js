@@ -1,93 +1,47 @@
 require("dotenv").config();
 
-const CoinKey = require("coinkey");
-const { Telegraf } = require("telegraf");
-const logger = require("./logger");
-const fs = require("fs");
 const moment = require("moment");
+const { getAddress } = require("./get-address");
+const { sendMessage } = require("./send-message");
+const { asObject, asArray, asObjectTest, asArrayTest } = require("./looper");
+const logger = require("./logger");
 
-const token = process.env.TOKEN ? process.env.TOKEN : "token";
-const chat_id = process.env.CHAT_ID ? process.env.CHAT_ID : 1;
+const faster = process.env.FASTER ? process.env.FASTER : 1;
+const dev = process.env.DEV ? process.env.DEV : true;
+const path_data = process.env.PATH_DATA ? process.env.PATH_DATA : "./data.txt";
 
-const bot = new Telegraf(token);
+const start = moment();
 
-async function sendMessage(message) {
+exports.main = async function () {
 	try {
-		await bot.telegram.sendMessage(chat_id, message);
-	} catch (error) {
-		logger.error(error);
-	}
-}
-
-async function getAddress(path) {
-	try {
-		const data = fs.readFileSync(path).toString().split("\n");
-
-		return data;
-	} catch (error) {
-		await sendMessage(error);
-		logger.error(error);
-		return false;
-	}
-}
-
-async function check(data, ck) {
-	try {
-		if (data.has(`${ck.publicAddress}`)) {
-			console.log("Private Key (Wallet Import Format): " + ck.privateWif);
-			console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
-			console.log("Address: " + ck.publicAddress);
-			logger.info("Private Key (Wallet Import Format): " + ck.privateWif);
-			logger.info("Private Key (Hex): " + ck.privateKey.toString("hex"));
-			logger.info("Address: " + ck.publicAddress);
-
-			await bot.telegram.sendMessage(
-				chat_id,
-				`${ck.publicAddress} - ${
-					ck.privateWif
-				} - ${ck.privateKey.toString("hex")}`
-			);
-		}
-	} catch (error) {
-		await sendMessage(error);
-		logger.error(error);
-		return false;
-	}
-}
-
-exports.main = async function (attempt = 1000000) {
-	try {
-		const data = await getAddress("./data.txt");
-		if (!data) return false;
-
+		const data = await getAddress(path_data);
 		const set = new Set(data);
 
-		// let speed = {
-		// 	sec: moment().format("ss"),
-		// 	count: 0,
-		// };
-
-		for (let index = 0; index < attempt; index++) {
-			// let time = moment().format("ss");
-			// if (speed.sec !== time) {
-			// 	let v = index - speed.count;
-			// 	console.log(`${index}) ${v}`);
-			// 	speed.sec = time;
-			// 	speed.count = index;
-			// }
-			let ck = new CoinKey.createRandom();
-			await check(set, ck);
-			ck.compressed = false;
-			await check(set, ck);
+		if (parseInt(dev) === 1) {
+			if (parseInt(faster) === 1) {
+				logger.info("MODE: DEVELOP | DATA: OBJECT");
+				await asObjectTest(set);
+			} else {
+				logger.info("MODE: DEVELOP | DATA: ARRAY");
+				await asArrayTest(data);
+			}
+		} else {
+			if (parseInt(faster) === 1) {
+				await asObject(set);
+			} else {
+				await asArray(data);
+			}
 		}
 
 		const date = moment().format("MMM Do YY, h:mm:ss");
 		const night = moment().format("H");
 
-		logger.info(date);
+		logger.info(
+			`${date} | ${moment.duration(moment().diff(start)).minutes()} min`
+		);
 
-		if (parseInt(night) <= 3) {
-			await bot.telegram.sendMessage(chat_id, date);
+		if (parseInt(night) <= 1) {
+			await sendMessage(date);
 		}
 	} catch (error) {
 		await sendMessage(error);
