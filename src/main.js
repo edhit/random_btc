@@ -33,7 +33,7 @@ async function getAddress(path) {
 
 async function check(data, ck) {
 	try {
-		if (data.includes(`${ck.publicAddress}`)) {
+		if (data.has(`${ck.publicAddress}`)) {
 			console.log("Private Key (Wallet Import Format): " + ck.privateWif);
 			console.log("Private Key (Hex): " + ck.privateKey.toString("hex"));
 			console.log("Address: " + ck.publicAddress);
@@ -60,11 +60,25 @@ exports.main = async function (attempt = 1000000) {
 		const data = await getAddress("./data.txt");
 		if (!data) return false;
 
+		const set = new Set(data);
+
+		// let speed = {
+		// 	sec: moment().format("ss"),
+		// 	count: 0,
+		// };
+
 		for (let index = 0; index < attempt; index++) {
+			// let time = moment().format("ss");
+			// if (speed.sec !== time) {
+			// 	let v = index - speed.count;
+			// 	console.log(`${index}) ${v}`);
+			// 	speed.sec = time;
+			// 	speed.count = index;
+			// }
 			let ck = new CoinKey.createRandom();
-			await check(data, ck);
+			await check(set, ck);
 			ck.compressed = false;
-			await check(data, ck);
+			await check(set, ck);
 		}
 
 		const date = moment().format("MMM Do YY, h:mm:ss");
