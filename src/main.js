@@ -40,9 +40,9 @@ exports.main = async function () {
 			`${date} | ${moment.duration(moment().diff(start)).minutes()} min`
 		);
 
-		if (parseInt(night) <= 1) {
+		//if (parseInt(night) <= 1) {
 			await sendMessage(date);
-		}
+		//}
 	} catch (error) {
 		await sendMessage(error);
 		logger.error(error);
